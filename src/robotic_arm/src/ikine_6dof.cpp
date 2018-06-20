@@ -13,7 +13,15 @@
 #include "complexTimes.h"
 #include "sqrt1.h"
 #include "ikine_6dof_rtwutil.h"
-
+#include "ros/ros.h"
+#include "std_msgs/String.h"
+#include <sstream>
+#include <iostream>
+#include <softcon/movemsg.h>
+using namespace std;
+using namespace ros;
+robotic_arm::cordinates temp;
+robotic_arm::angles ang;
 // Function Definitions
 
 //
@@ -32,7 +40,7 @@
 //                creal_T theta[6]
 // Return Type  : void
 //
-void ikine_6dof(double X, double Y, double Z, double r, double p, double y,
+void dof(double X, double Y, double Z, double r, double p, double y,
                 double a1, double a2, double a3, creal_T theta[6])
 {
   double theta1;
@@ -290,10 +298,31 @@ void ikine_6dof(double X, double Y, double Z, double r, double p, double y,
   theta[4] = theta5;
   theta[5].re = theta6_re;
   theta[5].im = theta6_im;
+  ang.ang1=theta[0].re; //give otehr values accordingly
+  
+   
 }
+void Callback(const::cordinates& x)  
+{
+	// give values of x to temp(global variable)
+}
+int main(int argc, char **argv) 
+{
+	ros::init;
+	ros::NodeHandle n;
+  ros::Publisher pub = n.advertise<std_msgs::Float64>("robotic_arm/setangle", 1000);// to be subscribed by arduino
+  ros::Subscriber sub = n.subscribe("robotic arm/cordinates", 1000, &servoCallback) ;// to be got by user input
+	ros::Rate rate(10);
+  while (ros::ok()) 
+	{ 
+	   dof(temp.x,temp.y,temp.z,temp.r,temp.p,temp.y,temp.a1,temp.a2,temp.a3);
+	  pub.publish(ang) ;
+		ros::spinOnce();
+		rate.sleep();
+	
+	}
+	return 0;
+} 
 
-//
-// File trailer for ikine_6dof.cpp
-//
-// [EOF]
-//
+
+
