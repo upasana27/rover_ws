@@ -13,6 +13,14 @@
 #include "complexTimes.h"
 #include "sqrt1.h"
 #include "ikine_6dof_rtwutil.h"
+#include "ros/ros.h"
+#include <sstream>
+#include <iostream>
+using namespace std;
+using namespace ros;
+robotic_Arm::spose& send;//create msgs
+robotic_Arm::rpose& recieve;//create msgs
+
 
 // Function Definitions
 
@@ -32,8 +40,8 @@
 //                creal_T theta[6]
 // Return Type  : void
 //
-void ikine_6dof(double X, double Y, double Z, double r, double p, double y,
-                double a1, double a2, double a3, creal_T theta[6])
+void ikine_6dof(double x, double y, double z, double r, double p, double y,
+                double a1, double a2, double a3,)
 {
   double theta1;
   double r3;
@@ -290,10 +298,31 @@ void ikine_6dof(double X, double Y, double Z, double r, double p, double y,
   theta[4] = theta5;
   theta[5].re = theta6_re;
   theta[5].im = theta6_im;
+  send.servo1=theta[0].re'
+  send.servo2=theta[1].re;
+  send.servo3=theta[2].re;
+  send.servo4=theta[3];
+  send.servo5=theta[4];
+  send.servo6=theta[5].re;
+  
 }
-
-//
-// File trailer for ikine_6dof.cpp
-//
-// [EOF]
-//
+void callback(robotic_arm::rpose& test)
+{
+//receive from test, do we need type-cpnversion?
+}
+int main(int argc, char **argv)
+{
+	NodeHandle n;
+  Subscriber sub = n.subscribe("arm/recieveposw", 1000, &callback) ;//subscribing from values sent by us
+	Publisher pub = n.advertise<std_msgs::Float64>("arm/sendpose", 1000);//publishing values to topic to be subscibed by MCU
+  Rate rate(10);
+  while (ok())
+	{
+		
+  ikine_6dof(recieve.x1,recieve.x2,recive.x3,rceieve.yaw,recieve.roll,recieve.pitch);//call function
+	pub.publish(send);
+   spinOnce();
+	rate.sleep();
+ }
+	return 0;
+}
