@@ -1,8 +1,0 @@
-prefix=/home/hit_ter/rover_ws/devel
-
-Name: robotic_arm
-Description: Description of robotic_arm
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/hit_ter/rover_ws/devel/lib 
-Requires: 

@@ -1,2 +1,0 @@
-robotic_arm
--DCATKIN_DEVEL_PREFIX=/home/hit_ter/rover_ws/devel -DCMAKE_INSTALL_PREFIX=/home/hit_ter/rover_ws/install -G Unix Makefiles
